@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Valentine for Harsh</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&family=Playfair+Display:ital,wght@1,600&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+  height:100vh;
+  background: radial-gradient(circle at top, #1a2a3a, #000);
+  font-family:'Poppins',sans-serif;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  overflow:hidden;
+  color:white;
+}
+
+/* Floating Emojis */
+.floating span{
+  position:absolute;
+  bottom:-60px;
+  font-size:22px;
+  animation: float linear infinite;
+  opacity:.8;
+}
+@keyframes float{
+  to{transform:translateY(-120vh) scale(1.6);}
+}
+
+/* Card */
+.card{
+  width:90%;
+  max-width:370px;
+  padding:38px 28px;
+  text-align:center;
+  border-radius:28px;
+  background:rgba(255,255,255,.1);
+  backdrop-filter:blur(18px);
+  box-shadow:0 0 45px rgba(255,77,109,.35);
+  position:relative;
+  z-index:2;
+}
+
+.typing{
+  font-size:22px;
+  border-right:2px solid white;
+  white-space:nowrap;
+  overflow:hidden;
+  display:inline-block;
+}
+
+/* Buttons */
+button{
+  padding:12px 28px;
+  border:none;
+  border-radius:30px;
+  font-size:15px;
+  cursor:pointer;
+  margin-top:30px;
+}
+
+.yes{
+  background:#ff4d6d;
+  color:white;
+  box-shadow:0 0 18px rgba(255,77,109,.7);
+}
+
+.no{
+  background:#eee;
+  color:#333;
+  position:absolute;
+  top:170px;
+  left:40px;
+}
+
+/* Popup */
+.popup{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.85);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  z-index:10;
+}
+
+.popup-box{
+  background:white;
+  color:#111;
+  padding:30px 24px;
+  border-radius:22px;
+  max-width:330px;
+  text-align:center;
+  animation:pop .4s ease;
+}
+
+@keyframes pop{
+  from{transform:scale(.8);opacity:0}
+  to{transform:scale(1);opacity:1}
+}
+
+.popup-text{
+  font-family:'Playfair Display',serif;
+  font-size:20px;
+  margin-bottom:20px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="floating" id="float"></div>
+
+<div class="card" id="card">
+  <div class="typing" id="typing"></div><br><br>
+  <button class="yes" onclick="startSlides()">Yes 💖</button>
+  <button class="no" id="noBtn">No 🙃</button>
+</div>
+
+<div class="popup" id="popup">
+  <div class="popup-box">
+    <div class="popup-text" id="popupText"></div>
+    <button class="yes" onclick="closePopup()">Okay… 💕</button>
+    <button onclick="closePopup()">Still No 😶</button>
+  </div>
+</div>
+
+<script>
+/* Floating Emojis */
+const float=document.getElementById("float");
+["❤️","💖","✨","🥺","🖤","💫"].forEach(e=>{
+  for(let i=0;i<3;i++){
+    let s=document.createElement("span");
+    s.innerText=e;
+    s.style.left=Math.random()*100+"%";
+    s.style.animationDuration=8+Math.random()*6+"s";
+    float.appendChild(s);
+  }
+});
+
+/* Typing */
+const text="Harsh, will you be my Valentine? 💌";
+let i=0;
+const typing=document.getElementById("typing");
+(function type(){
+  if(i<text.length){
+    typing.textContent+=text.charAt(i++);
+    setTimeout(type,80);
+  }
+})();
+
+/* NO logic */
+const noBtn=document.getElementById("noBtn");
+const card=document.getElementById("card");
+const popup=document.getElementById("popup");
+const popupText=document.getElementById("popupText");
+
+const messages=[
+  "How can you say no so easily? 🥺",
+  "Do you really not feel anything? 💔",
+  "Please don’t break my heart like this… 😞",
+  "You’re being a little heartless right now 😤",
+  "Last chance… think once again 💭"
+];
+
+let count=0;
+
+noBtn.addEventListener("mouseenter",()=>{
+  const x=card.clientWidth-noBtn.offsetWidth-10;
+  const y=card.clientHeight-noBtn.offsetHeight-10;
+  noBtn.style.left=Math.random()*x+"px";
+  noBtn.style.top=Math.random()*y+"px";
+});
+
+noBtn.addEventListener("click",()=>{
+  popup.style.display="flex";
+  popupText.textContent=messages[Math.min(count,messages.length-1)];
+  count++;
+});
+
+function closePopup(){ popup.style.display="none"; }
+
+/* Slides */
+let slide=0;
+function startSlides(){
+  slide++;
+  if(slide===1){
+    document.body.innerHTML=`
+    <div style="text-align:center;padding:30px">
+      <h1 style="font-family:Playfair Display">I Love You ❤️</h1>
+      <p>
+        Thank you for choosing me.<br>
+        Thank you for being you.<br>
+        This moment means more than you know 💫
+      </p>
+    </div>`;
+    setTimeout(startSlides,3500);
+  }
+  if(slide===2){
+    document.body.innerHTML=`
+    <div style="text-align:center;padding:30px">
+      <h1>Respect 🤍</h1>
+      <p>
+        I respect your heart,<br>
+        your emotions,<br>
+        and everything that makes you… you ✨
+      </p>
+    </div>`;
+    setTimeout(startSlides,3500);
+  }
+  if(slide===3){
+    document.body.innerHTML=`
+    <div style="text-align:center;padding:30px">
+      <h1>Grateful 💐</h1>
+      <p>
+        Thank you for existing.<br>
+        Thank you for your kindness.<br>
+        Thank you for being in my life 🫶
+      </p>
+    </div>`;
+    setTimeout(startSlides,3500);
+  }
+  if(slide===4){
+    document.body.innerHTML=`
+    <div style="text-align:center;padding:30px">
+      <h1>Forever 💖</h1>
+      <p>
+        I don’t promise perfection,<br>
+        but I promise effort, loyalty,<br>
+        and choosing you — every single day 🌙
+      </p>
+    </div>`;
+  }
+}
+</script>
+
+</body>
+</html>
